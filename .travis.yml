@@ -1,3 +1,9 @@
-language: ruby
+env:
+  matrix:
+  - RAILS_VERSION=3.2
+  - RAILS_VERSION=4.1
 rvm:
-  - 2.1.6
+- 2.1.0
+- 1.9.3
+before_script: sh -c 'cd spec/example && bundle exec rake db:create db:migrate'
+cache: bundler
