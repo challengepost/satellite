@@ -1,4 +1,4 @@
-require 'satellite'
+require "satellite"
 
 module Satellite
   class Engine < ::Rails::Engine
@@ -16,6 +16,5 @@ module Satellite
     initializer "satellite.finalize_configuration" do |app|
       Satellite.finalize_configuration!(app)
     end
-
   end
 end

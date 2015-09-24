@@ -6,6 +6,10 @@ module Satellite
       def copy_initializer
         template "satellite.rb", "config/initializers/satellite.rb"
       end
+
+      def setup_routes
+        route "mount Satellite::Engine => \"/satellite\""
+      end
     end
   end
 end

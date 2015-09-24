@@ -41,7 +41,6 @@ module Satellite
     def user_class
       Satellite.configuration.user_class
     end
-
   end
 end
 

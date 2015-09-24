@@ -40,7 +40,8 @@ module Satellite
         session[:return_to] = request.url
         redirect_to auth_provider_path
       else
-        redirect_to after_sign_out_url, alert: 'You need to sign in for access to this page.'
+        redirect_to after_sign_out_url,
+          alert: 'You need to sign in for access to this page.'
       end
     end
 
@@ -68,6 +69,5 @@ module Satellite
     def skip_satellite_authentication?
       !!@skip_satellite_authentication
     end
-
   end
 end
