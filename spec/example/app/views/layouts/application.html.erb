@@ -1,0 +1,23 @@
+<!DOCTYPE html>
+<html>
+<head>
+  <title>Example</title>
+  <%= stylesheet_link_tag    'application', media: 'all', 'data-turbolinks-track' => true %>
+  <%= javascript_include_tag 'application', 'data-turbolinks-track' => true %>
+  <%= csrf_meta_tags %>
+</head>
+<body>
+    <%= render 'reimagine2/devpost/global_nav' %>
+
+    <main role="main" class="main container">
+      <div class="content-section row">
+        <div class="content-columns large-12 columns">
+          <%= render 'layouts/messages' %>
+          <%= yield %>
+        </div>
+      </div>
+    </main>
+
+    <%= render 'reimagine2/devpost/footer' %>
+</body>
+</html>
