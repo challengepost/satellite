@@ -1,5 +1,5 @@
-module Omniauth
-  OmniAuth.config.logger = Logger.new('/dev/null')
+module OmniAuthHelpers
+  ::OmniAuth.config.logger = Logger.new('/dev/null')
 
   module Mock
     def mock_auth(credentials = default_auth_credentials)
@@ -72,5 +72,11 @@ module Omniauth
       end
     end
   end
-
 end
+
+RSpec.configure do |config|
+  config.include OmniAuthHelpers::Mock
+  config.include OmniAuthHelpers::SessionHelpers, type: :feature
+end
+
+OmniAuth.config.test_mode = true
