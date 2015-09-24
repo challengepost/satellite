@@ -1,5 +1,7 @@
 # Satellite
 
+[![Build Status](https://travis-ci.org/challengepost/satellite.svg)](https://travis-ci.org/challengepost/satellite)
+
 Satellite is a Rails engine for client authentication against an OAuth provider
 via [OmniAuth](https://github.com/intridea/omniauth). The use case for this
 engine is to build a client application on a site where you're already
