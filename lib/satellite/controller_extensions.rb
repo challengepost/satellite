@@ -3,7 +3,6 @@ module Satellite
     extend ActiveSupport::Concern
 
     included do
-
       helper_method :current_user
       helper_method :user_signed_in?
     end
@@ -13,7 +12,7 @@ module Satellite
     end
 
     def current_user
-      @current_user ||= current_satellite_user || Satellite.configuration.anonymous_user_class.new
+      @current_user ||= current_satellite_user || anonymous_user
     end
 
     def current_satellite_user
@@ -45,6 +44,21 @@ module Satellite
       end
     end
 
+    def authenticate_user?
+      enable_auto_login? && cookies[:user_uid].present?
+    end
+
+    def sign_out
+      return unless user_signed_in?
+
+      warden.logout(:satellite)
+      @current_user = anonymous_user
+    end
+
+    def valid_session?
+      current_user.provider_key?([Satellite.configuration.provider, cookies[:user_uid]])
+    end
+
     def after_sign_in_url
       return_to_url || root_url
     end
@@ -68,6 +82,14 @@ module Satellite
 
     def skip_satellite_authentication?
       !!@skip_satellite_authentication
+    end
+
+    def
+
+    private
+
+    def anonymous_user
+      @anonymous_user ||= Satellite.configuration.anonymous_user_class.new
     end
   end
 end
