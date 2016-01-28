@@ -28,7 +28,7 @@ module Satellite
     end
 
     def auth_provider_path
-      "/auth/#{Satellite.configuration.provider}"
+      "#{Satellite.path_prefix}/#{Satellite.configuration.provider}"
     end
 
     def authenticate_user!
