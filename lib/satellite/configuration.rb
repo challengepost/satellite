@@ -26,6 +26,10 @@ module Satellite
       AnonymousUser = Class.new{include Satellite::AnonymousUser}
     end
 
+    config_accessor :path_prefix do
+      "/auth"
+    end
+
     def enable_auto_login?
       !!self.enable_auto_login
     end
@@ -63,7 +67,8 @@ module Satellite
     def configure_omniauth!(app)
       config = self
       app.middleware.use OmniAuth::Builder do |builder|
-        provider config.provider, *config.omniauth_args
+        opts = config.omniauth_args.extract_options!
+        provider config.provider, *config.omniauth_args, opts.merge(path_prefix: config.path_prefix)
       end
     end
 
