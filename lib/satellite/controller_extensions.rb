@@ -84,8 +84,6 @@ module Satellite
       !!@skip_satellite_authentication
     end
 
-    def
-
     private
 
     def anonymous_user

@@ -9,8 +9,8 @@ module Satellite
         auth.extend Hashie::Extensions::DeepFetch
         create! do |user|
           user.provider = auth['provider']
-          user.uid = auth['uid']
-          user.name = [
+          user.uid      = auth['uid']
+          user.name  = [
             auth.deep_fetch('info', 'first_name') { '' } ,
             auth.deep_fetch('info', 'last_name') { '' }
           ].join(' ')
@@ -36,7 +36,7 @@ module Satellite
     end
 
     def provider_key?(key)
-
+      provider_key.map(&:to_s) == Array[*key].map(&:to_s)
     end
   end
 end

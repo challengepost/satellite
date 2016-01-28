@@ -7,7 +7,7 @@ require 'warden'
 module Satellite
   class WardenStrategy < Warden::Strategies::Base
 
-    # cookies[:user_id] provided when logged in on platform app
+    # cookies[:user_uid] provided when logged in on platform app
     # env['omniauth.auth'] provided when completed omniauth callback
     #
     def valid?
