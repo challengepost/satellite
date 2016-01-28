@@ -10,6 +10,7 @@ module Satellite
         create! do |user|
           user.provider = auth["provider"]
           user.uid      = auth["uid"]
+          user.screen_name  = auth.deep_fetch("info", "nickname") { "" }
           user.name  = auth.deep_fetch("info", "name") { "" }
           user.email = auth.deep_fetch("info", "email") { "" }
         end
