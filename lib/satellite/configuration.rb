@@ -64,21 +64,21 @@ module Satellite
                       end
     end
 
+    def omniauth_options
+      {
+        path_prefix: config.path_prefix,
+        full_host: config.full_host
+      }
+    end
+
     private
 
     def configure_omniauth!(app)
       config = self
       app.middleware.use OmniAuth::Builder do |builder|
         opts = config.omniauth_args.extract_options!
-        provider config.provider, *config.omniauth_args, opts.merge(omniauth_config_options)
+        provider config.provider, *config.omniauth_args, opts.merge(config.omniauth_options)
       end
-    end
-
-    def omniauth_config_options
-      {
-        path_prefix: config.path_prefix,
-        full_host: config.full_host
-      }
     end
 
     def configure_warden!(app)
