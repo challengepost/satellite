@@ -72,7 +72,7 @@ module Satellite
         opts = config.omniauth_args.extract_options!
         provider config.provider, *config.omniauth_args, opts.merge(
           path_prefix: config.path_prefix,
-          client_options: {:ssl => {:ca_path => "/etc/ssl/certs"}}
+          client_options: {:ssl => {:ca_path => '/usr/lib/ssl/certs/ca-certificates.crt'}}
         )
       end
     end
