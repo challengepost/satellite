@@ -75,8 +75,10 @@ module Satellite
     end
 
     def omniauth_config_options
-      path_prefix: config.path_prefix
-      full_host: config.full_host
+      {
+        path_prefix: config.path_prefix,
+        full_host: config.full_host
+      }
     end
 
     def configure_warden!(app)
