@@ -18,6 +18,8 @@ module Satellite
       true
     end
 
+    config_accessor :full_host
+
     config_accessor :user_class do
       User = Class.new{include Satellite::User}
     end
@@ -68,8 +70,13 @@ module Satellite
       config = self
       app.middleware.use OmniAuth::Builder do |builder|
         opts = config.omniauth_args.extract_options!
-        provider config.provider, *config.omniauth_args, opts.merge(path_prefix: config.path_prefix)
+        provider config.provider, *config.omniauth_args, opts.merge(omniauth_config_options)
       end
+    end
+
+    def omniauth_config_options
+      path_prefix: config.path_prefix
+      full_host: config.full_host
     end
 
     def configure_warden!(app)
