@@ -70,10 +70,7 @@ module Satellite
       config = self
       app.middleware.use OmniAuth::Builder do |builder|
         opts = config.omniauth_args.extract_options!
-        provider config.provider, *config.omniauth_args, opts.merge(
-          path_prefix: config.path_prefix,
-          client_options: {:ca_file => '/usr/lib/ssl/certs/ca-certificates.crt'}
-        )
+        provider config.provider, *config.omniauth_args, opts.merge(path_prefix: config.path_prefix)
       end
     end
 
