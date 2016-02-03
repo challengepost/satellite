@@ -3,6 +3,8 @@ require "spec_helper"
 describe Satellite::SessionsController, :omniauth do
   let(:warden) { double(Warden::Proxy, set_user: nil) }
 
+  routes { Satellite::Engine.routes }
+
   before do
     allow(Satellite.configuration).to receive(:enable_auto_login?) { false }
 
@@ -18,7 +20,7 @@ describe Satellite::SessionsController, :omniauth do
 
     it "redirects the user to the root" do
       post :create, provider: :devpost
-      expect(response).to redirect_to root_path
+      expect(response).to redirect_to "/"
     end
   end
 
@@ -34,7 +36,7 @@ describe Satellite::SessionsController, :omniauth do
 
     it "redirects to the home page" do
       delete :destroy
-      expect(response).to redirect_to root_url
+      expect(response).to redirect_to "/"
     end
   end
 

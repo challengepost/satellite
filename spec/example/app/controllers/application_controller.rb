@@ -6,7 +6,6 @@ class ApplicationController < ActionController::Base
   before_action :authenticate_user!, if: :enable_auto_login?
 
   rescue_from Satellite::AccessDenied do |exception|
-    redirect_to failure_url message: exception.message
+    redirect_to satellite.failure_url message: exception.message
   end
 end
-

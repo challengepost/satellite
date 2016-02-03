@@ -70,7 +70,7 @@ module Satellite
 
     def after_sign_out_url
       if Satellite.configuration.enable_auto_login?
-        failure_url
+        satellite.failure_url
       else
         root_url
       end

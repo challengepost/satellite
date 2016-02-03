@@ -5,7 +5,7 @@
     <li class="divider"></li>
     <li><%= link_to current_user.email, "#" %></li>
     <li class="divider"></li>
-    <li><%= link_to 'Sign out', sign_out_path %></li>
+    <li><%= link_to 'Sign out', satellite.sign_out_path %></li>
     <li class="divider"></li>
   </ul>
 <% else %>
@@ -13,7 +13,7 @@
     <li class="divider hide-for-small"></li>
     <li><%= link_to 'About', page_path('about') %></li>
     <li class="divider"></li>
-    <li><%= link_to 'Sign in', sign_in_path %></li>
+    <li><%= link_to 'Sign in', satellite.sign_in_path %></li>
     <li class="divider"></li>
   </ul>
 <% end %>
