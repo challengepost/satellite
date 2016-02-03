@@ -35,7 +35,8 @@ describe Satellite::User do
       info = {
         'first_name' => 'Missy',
         'last_name' => 'Wednesday',
-        'email' => 'missy@example.com'
+        'email' => 'missy@example.com',
+        'name' => 'Missy Wednesday'
       }
       user = User.find_or_create_with_omniauth(auth('info' => info))
       expect(user.name).to eq('Missy Wednesday')
