@@ -13,6 +13,7 @@ module Satellite
           user.screen_name  = auth.deep_fetch("info", "nickname") { "" }
           user.name  = auth.deep_fetch("info", "name") { "" }
           user.email = auth.deep_fetch("info", "email") { "" }
+          user.image_url = auth.deep_fetch("info", "image") { "" }
         end
       end
 
