@@ -36,11 +36,13 @@ describe Satellite::User do
         'first_name' => 'Missy',
         'last_name' => 'Wednesday',
         'email' => 'missy@example.com',
-        'name' => 'Missy Wednesday'
+        'name' => 'Missy Wednesday',
+        'image' => 'https://www.gravatar.com/avatar/205e460b479e2e5b48aec07710c08d50'
       }
       user = User.find_or_create_with_omniauth(auth('info' => info))
       expect(user.name).to eq('Missy Wednesday')
       expect(user.email).to eq('missy@example.com')
+      expect(user.image_url).to eq('https://www.gravatar.com/avatar/205e460b479e2e5b48aec07710c08d50')
     end
   end
 end

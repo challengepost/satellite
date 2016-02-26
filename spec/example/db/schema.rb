@@ -11,7 +11,7 @@
 #
 # It's strongly recommended that you check this file into your version control system.
 
-ActiveRecord::Schema.define(version: 20160203144816) do
+ActiveRecord::Schema.define(version: 20160226224202) do
 
   create_table "users", force: :cascade do |t|
     t.string   "name"
@@ -21,6 +21,7 @@ ActiveRecord::Schema.define(version: 20160203144816) do
     t.datetime "created_at"
     t.datetime "updated_at"
     t.string   "screen_name"
+    t.string   "image_url"
   end
 
   add_index "users", ["screen_name"], name: "index_users_on_screen_name", unique: true
