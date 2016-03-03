@@ -5,6 +5,8 @@ module Satellite
     included do
       helper_method :current_user
       helper_method :user_signed_in?
+
+      before_action :skip_satellite_authentication, if: :should_skip_satellite_authentication?
     end
 
     def warden
@@ -37,7 +39,7 @@ module Satellite
 
       if enable_auto_login?
         session[:return_to] = request.url
-        redirect_to auth_provider_path
+        redirect_to provider_router_url
       else
         redirect_to after_sign_out_url,
           alert: 'You need to sign in for access to this page.'
@@ -84,7 +86,28 @@ module Satellite
       !!@skip_satellite_authentication
     end
 
+    def skip_satellite_authentication
+      @skip_satellite_authentication = true
+    end
+
+    def should_skip_satellite_authentication?
+      (params[:skip].to_i == 1).tap do |skip|
+        cookies.delete(:user_uid, domain: :all, httponly: true) if skip
+      end
+    end
+
     private
+
+    def provider_router_url
+      ssl_enabled = Satellite.configuration.ssl_enabled
+
+      uri_builder = ssl_enabled ? URI::HTTPS : URI::HTTP
+      uri_builder.build(
+        host: Satellite.configuration.provider_root_url,
+        path: "/auth/router",
+        query: { return_to: request.url }.to_query
+      ).to_s
+    end
 
     def anonymous_user
       @anonymous_user ||= Satellite.configuration.anonymous_user_class.new

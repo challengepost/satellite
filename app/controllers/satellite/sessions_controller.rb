@@ -2,7 +2,7 @@ module Satellite
   class SessionsController < ::ApplicationController
     protect_from_forgery except: :create
 
-    prepend_before_filter :require_no_authentication
+    prepend_before_filter :skip_satellite_authentication
 
     before_action :log_omniauth, only: :create
 
@@ -43,10 +43,5 @@ module Satellite
 
       redirect_to Satellite.configuration.provider_root_url
     end
-
-    def require_no_authentication
-      @skip_satellite_authentication = true
-    end
-
   end
 end

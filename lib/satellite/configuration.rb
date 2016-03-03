@@ -32,6 +32,8 @@ module Satellite
       "/auth"
     end
 
+    config_accessor :ssl_enabled
+
     def enable_auto_login?
       !!self.enable_auto_login
     end
