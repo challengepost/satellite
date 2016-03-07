@@ -36,9 +36,10 @@ module Satellite
     end
 
     def auth_provider_url
-      Addressable::URI.parse(Satellite.configuration.full_host).tap do |uri|
-        uri.path = auth_provider_path
-      end.to_s
+      uri_builder.build(
+        host: Satellite.configuration.provider_root_url,
+        path: auth_provider_path
+      ).to_s
     end
 
     def authenticate_user!
