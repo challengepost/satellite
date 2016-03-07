@@ -100,7 +100,10 @@ module Satellite
       uri_builder.build(
         host: Satellite.configuration.provider_root_url,
         path: "/auth/router",
-        query: { return_to: request.url }.to_query
+        query: {
+          return_to: request.url,
+          auth_provider_path: auth_provider_path
+        }.to_query
       ).to_s
     end
 
