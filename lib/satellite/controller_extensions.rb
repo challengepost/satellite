@@ -1,3 +1,5 @@
+require "addressable/uri"
+
 module Satellite
   module ControllerExtensions
     extend ActiveSupport::Concern
@@ -31,6 +33,12 @@ module Satellite
 
     def auth_provider_path
       "#{Satellite.configuration.path_prefix}/#{Satellite.configuration.provider}"
+    end
+
+    def auth_provider_url
+      Addressable::URI.parse(Satellite.configuration.full_host).tap do |uri|
+        uri.path = auth_provider_path
+      end.to_s
     end
 
     def authenticate_user!
@@ -102,7 +110,7 @@ module Satellite
         path: "/auth/router",
         query: {
           return_to: request.url,
-          auth_provider_path: auth_provider_path
+          auth_provider_url: auth_provider_url
         }.to_query
       ).to_s
     end
