@@ -91,17 +91,12 @@ module Satellite
     end
 
     def should_skip_satellite_authentication?
-      (params[:skip].to_i == 1).tap do |skip|
-        cookies.delete(:user_uid, domain: :all, httponly: true) if skip
-      end
+      (params[:skip].to_i == 1).tap { |skip| delete_user_identity_cookie if skip }
     end
 
     private
 
     def provider_router_url
-      ssl_enabled = Satellite.configuration.ssl_enabled
-
-      uri_builder = ssl_enabled ? URI::HTTPS : URI::HTTP
       uri_builder.build(
         host: Satellite.configuration.provider_root_url,
         path: "/auth/router",
@@ -109,8 +104,16 @@ module Satellite
       ).to_s
     end
 
+    def uri_builder
+      Satellite.configuration.ssl_enabled ? URI::HTTPS : URI::HTTP
+    end
+
     def anonymous_user
       @anonymous_user ||= Satellite.configuration.anonymous_user_class.new
+    end
+
+    def delete_user_identity_cookie
+      cookies.delete(:user_uid, domain: :all, httponly: true)
     end
   end
 end
