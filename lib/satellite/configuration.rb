@@ -8,6 +8,8 @@ module Satellite
       []
     end
 
+    config_accessor :provider_root_domain
+
     config_accessor :provider_root_url
 
     config_accessor :warden_config_blocks do
@@ -51,6 +53,12 @@ module Satellite
       config.provider || (raise ConfigurationError.new("You must configure Satellite omniauth"))
     end
 
+    def provider_root_domain=(domain)
+      config.provider_root_domain = domain
+
+      self.provider_root_url = uri_builder.build(host: domain).to_s
+    end
+
     def provider_root_url=(url)
       URI.parse(url)
       config.provider_root_url = url
@@ -60,10 +68,10 @@ module Satellite
 
     def finalize!(app)
       @configured ||= begin
-                        configure_omniauth!(app)
-                        configure_warden!(app)
-                        true
-                      end
+        configure_omniauth!(app)
+        configure_warden!(app)
+        true
+      end
     end
 
     private
@@ -83,6 +91,10 @@ module Satellite
         warden.failure_app = Satellite::SessionsController.action(:failure)
         warden_config_blocks.each {|block| block.call warden }
       end
+    end
+
+    def uri_builder
+      config.ssl_enabled ? URI::HTTPS : URI::HTTP
     end
   end
 end

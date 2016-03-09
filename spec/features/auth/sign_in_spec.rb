@@ -12,10 +12,9 @@ feature 'Sign in', :omniauth do
       mock_auth :invalid_credentials
 
       visit root_path
-      expect(page).to have_content("Sign in")
       click_link "Sign in"
-      expect(page).to have_content('Whoa')
-      expect(page).to have_content('You do not have credentials')
+      expect(page).not_to have_content("bob@example.com")
+      expect(page).not_to have_content("Sign out")
     end
   end
 
@@ -33,9 +32,8 @@ feature 'Sign in', :omniauth do
       mock_auth :invalid_credentials
 
       visit page_path('about')
-      expect(page).to have_content('Whoa')
-      expect(page).to have_content('You do not have credentials')
-      expect(page).to_not have_content("Sign out")
+      expect(page).not_to have_content("About the Warehouse")
+      expect(page).not_to have_content("bob@example.com")
     end
 
   end

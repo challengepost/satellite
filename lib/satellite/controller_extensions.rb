@@ -35,11 +35,10 @@ module Satellite
       "#{Satellite.configuration.path_prefix}/#{Satellite.configuration.provider}"
     end
 
-    def auth_provider_url
-      uri_builder.build(
-        host: Satellite.configuration.provider_root_url,
-        path: auth_provider_path
-      ).to_s
+    def satellite_auth_provider_url
+      uri = Addressable::URI.parse(Satellite.configuration.provider_root_url)
+      uri.path = auth_provider_path
+      uri.to_s
     end
 
     def authenticate_user!
@@ -106,18 +105,14 @@ module Satellite
     private
 
     def provider_router_url
-      uri_builder.build(
-        host: Satellite.configuration.provider_root_url,
-        path: "/auth/router",
-        query: {
-          return_to: request.url,
-          auth_provider_url: auth_provider_url
-        }.to_query
-      ).to_s
-    end
+      uri = Addressable::URI.parse(Satellite.configuration.provider_root_url)
+      uri.path = "/auth/router"
+      uri.query_values = {
+        return_to: request.url,
+        auth_provider_url: satellite_auth_provider_url
+      }
 
-    def uri_builder
-      Satellite.configuration.ssl_enabled ? URI::HTTPS : URI::HTTP
+      uri.to_s
     end
 
     def anonymous_user
