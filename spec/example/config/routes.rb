@@ -3,5 +3,5 @@ Rails.application.routes.draw do
   root :to => "visitors#index"
   get "about" => "high_voltage/pages#show", id: "about"
 
-  get "auth/router", to: "authentications#router"
+  get "auth/satellite_refresh", to: "authentications#satellite_refresh"
 end

@@ -62,4 +62,22 @@ describe Satellite::SessionsController, :omniauth do
       expect(response).to redirect_to "http://devpost.com"
     end
   end
+
+  describe "#refresh" do
+    it "clears the user_uid cookie and redirects to the return_to url stored in the session" do
+      return_to_url = "http://devpost.com/teams/devpost"
+
+      session = double
+      allow(controller).to receive(:session) { session }
+      allow(session).to receive(:delete).with(:return_to) { return_to_url }
+
+      cookies = double(:delete)
+      allow(controller).to receive(:cookies) { cookies }
+      expect(cookies).to receive(:delete).with(:user_uid, domain: :all, httponly: true)
+
+      get :refresh
+
+      expect(response).to redirect_to "/teams/devpost"
+    end
+  end
 end

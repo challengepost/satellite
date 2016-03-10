@@ -7,8 +7,6 @@ module Satellite
     included do
       helper_method :current_user
       helper_method :user_signed_in?
-
-      before_action :skip_satellite_authentication, if: :should_skip_satellite_authentication?
     end
 
     def warden
@@ -35,6 +33,7 @@ module Satellite
       "#{Satellite.configuration.path_prefix}/#{Satellite.configuration.provider}"
     end
 
+    # Ex: /teams/auth/devpost
     def satellite_auth_provider_url
       uri = Addressable::URI.parse(Satellite.configuration.provider_root_url)
       uri.path = auth_provider_path
@@ -47,7 +46,7 @@ module Satellite
 
       if enable_auto_login?
         session[:return_to] = request.url
-        redirect_to provider_router_url
+        redirect_to satellite_refresh_url
       else
         redirect_to after_sign_out_url,
           alert: 'You need to sign in for access to this page.'
@@ -98,17 +97,13 @@ module Satellite
       @skip_satellite_authentication = true
     end
 
-    def should_skip_satellite_authentication?
-      (params[:skip].to_i == 1).tap { |skip| delete_user_identity_cookie if skip }
-    end
-
     private
 
-    def provider_router_url
+    def satellite_refresh_url
       uri = Addressable::URI.parse(Satellite.configuration.provider_root_url)
-      uri.path = "/auth/router"
+      uri.path = "/auth/satellite_refresh"
       uri.query_values = {
-        return_to: request.url,
+        return_to: satellite.refresh_url,
         auth_provider_url: satellite_auth_provider_url
       }
 
@@ -117,10 +112,6 @@ module Satellite
 
     def anonymous_user
       @anonymous_user ||= Satellite.configuration.anonymous_user_class.new
-    end
-
-    def delete_user_identity_cookie
-      cookies.delete(:user_uid, domain: :all, httponly: true)
     end
   end
 end

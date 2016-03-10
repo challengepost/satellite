@@ -26,6 +26,11 @@ module Satellite
     def failure
     end
 
+    def refresh
+      cookies.delete :user_uid, domain: :all, httponly: true
+      redirect_to(return_to_url || root_url)
+    end
+
     private
 
     def log_omniauth
