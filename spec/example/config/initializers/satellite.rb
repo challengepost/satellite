@@ -30,4 +30,5 @@ Satellite.configure do |config|
   config.user_class            = User
   config.anonymous_user_class  = AnonymousUser
   config.enable_auto_login     = false
+  config.provider_root_domain     = "example.com"
 end

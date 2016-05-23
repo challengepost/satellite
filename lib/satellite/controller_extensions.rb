@@ -1,3 +1,5 @@
+require "addressable/uri"
+
 module Satellite
   module ControllerExtensions
     extend ActiveSupport::Concern
@@ -31,13 +33,20 @@ module Satellite
       "#{Satellite.configuration.path_prefix}/#{Satellite.configuration.provider}"
     end
 
+    # Ex: /teams/auth/devpost
+    def satellite_auth_provider_url
+      uri = Addressable::URI.parse(Satellite.configuration.provider_root_url)
+      uri.path = auth_provider_path
+      uri.to_s
+    end
+
     def authenticate_user!
       return true if skip_satellite_authentication?
       return true if user_signed_in?
 
       if enable_auto_login?
         session[:return_to] = request.url
-        redirect_to auth_provider_path
+        redirect_to satellite_refresh_url
       else
         redirect_to after_sign_out_url,
           alert: 'You need to sign in for access to this page.'
@@ -84,7 +93,22 @@ module Satellite
       !!@skip_satellite_authentication
     end
 
+    def skip_satellite_authentication
+      @skip_satellite_authentication = true
+    end
+
     private
+
+    def satellite_refresh_url
+      uri = Addressable::URI.parse(Satellite.configuration.provider_root_url)
+      uri.path = "/auth/satellite_refresh"
+      uri.query_values = {
+        return_to: satellite.refresh_url,
+        auth_provider_url: satellite_auth_provider_url
+      }
+
+      uri.to_s
+    end
 
     def anonymous_user
       @anonymous_user ||= Satellite.configuration.anonymous_user_class.new

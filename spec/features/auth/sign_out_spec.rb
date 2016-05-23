@@ -13,9 +13,10 @@ feature 'Sign out', :omniauth do
     background { mock_sso_auth }
 
     scenario 'user signs out successfully' do
-      visit root_path
+      visit page_path('about')
       click_link 'Sign out'
-      expect(page).to have_content 'Whoa'
+      expect(page).not_to have_content 'Sign out'
+      expect(page).to have_content 'Sign in'
     end
   end
 end
