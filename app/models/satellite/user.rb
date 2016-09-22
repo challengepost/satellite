@@ -4,17 +4,27 @@ module Satellite
   module User
     extend ActiveSupport::Concern
 
+    user_attributes = [:provider, :uid, :screen_name, :nickname, :name, :first_name, :last_name, :email, :image, :description]
+
     module ClassMethods
       def create_with_omniauth(auth)
         auth.extend Hashie::Extensions::DeepFetch
         create! do |user|
           user.provider = auth["provider"]
           user.uid      = auth["uid"]
-          user.screen_name  = auth.deep_fetch("info", "nickname") { "" }
-          user.name  = auth.deep_fetch("info", "name") { "" }
-          user.email = auth.deep_fetch("info", "email") { "" }
-          user.image_url = auth.deep_fetch("info", "image") { "" }
+
+          user_info_attributes.each do |attribute|
+            setter = "#{attribute}="
+            if user.respond_to? setter
+              user.send(setter, auth.deep_fetch("info", attribute.to_s) { "" })
+            end
+          end
         end
+      end
+
+      def user_info_attributes
+        # https://github.com/omniauth/omniauth/wiki/Auth-Hash-Schema
+        [:nickname, :name, :first_name, :last_name, :email, :image, :description, :location, :phone]
       end
 
       def find_with_omniauth(auth)
