@@ -4,8 +4,6 @@ module Satellite
   module User
     extend ActiveSupport::Concern
 
-    user_attributes = [:provider, :uid, :screen_name, :nickname, :name, :first_name, :last_name, :email, :image, :description]
-
     module ClassMethods
       def create_with_omniauth(auth)
         auth.extend Hashie::Extensions::DeepFetch
