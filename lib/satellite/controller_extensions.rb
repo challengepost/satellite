@@ -75,6 +75,7 @@ module Satellite
     # ensure path only endpoint retrieved from session to protect offsite redirect
     def return_to_url
       return_to = session.delete(:return_to)
+      return unless return_to
 
       Addressable::URI.parse(return_to).tap do |url|
         url.scheme = nil
