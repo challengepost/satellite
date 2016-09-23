@@ -21,7 +21,7 @@ ActiveRecord::Schema.define(version: 20160226224202) do
     t.datetime "created_at"
     t.datetime "updated_at"
     t.string   "screen_name"
-    t.string   "image_url"
+    t.string   "image"
   end
 
   add_index "users", ["screen_name"], name: "index_users_on_screen_name", unique: true
