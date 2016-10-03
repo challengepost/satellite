@@ -45,7 +45,9 @@ module Satellite
       return true if user_signed_in?
 
       if enable_auto_login?
-        session[:return_to] = request.url
+        session[:return_to] = Addressable::URI.parse(request.url).tap do |url|
+          url.host = root_url_host || request.host
+        end.to_s
         redirect_to satellite_refresh_url
       else
         redirect_to after_sign_out_url,
@@ -106,14 +108,13 @@ module Satellite
     private
 
     def satellite_refresh_url
-      uri = Addressable::URI.parse(Satellite.configuration.provider_root_url)
-      uri.path = "/auth/satellite_refresh"
-      uri.query_values = {
-        return_to: satellite.refresh_url,
-        auth_provider_url: satellite_auth_provider_url
-      }
-
-      uri.to_s
+      Addressable::URI.parse(Satellite.configuration.provider_root_url).tap do |url|
+        url.path = "/auth/satellite_refresh"
+        url.query_values = {
+          return_to: satellite.refresh_url,
+          auth_provider_url: satellite_auth_provider_url
+        }
+      end.to_s
     end
 
     def anonymous_user
