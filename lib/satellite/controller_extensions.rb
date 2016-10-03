@@ -46,6 +46,8 @@ module Satellite
 
       if enable_auto_login?
         session[:return_to] = Addressable::URI.parse(request.url).tap do |url|
+          # use configured host instead of request host
+          # prevents redirecting to proxied host
           url.host = root_url_host || request.host
         end.to_s
         redirect_to satellite_refresh_url
@@ -103,6 +105,10 @@ module Satellite
 
     def skip_satellite_authentication
       @skip_satellite_authentication = true
+    end
+
+    def root_url_host
+      Rails.application.config.action_controller.default_url_options[:host]
     end
 
     private
