@@ -108,7 +108,8 @@ module Satellite
     end
 
     def root_url_host
-      Rails.application.config.action_controller.default_url_options[:host]
+      default_url_opts = Rails.application.config.action_controller.default_url_options
+      default_url_opts[:host] if default_url_opts
     end
 
     private
