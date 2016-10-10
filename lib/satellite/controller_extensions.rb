@@ -83,7 +83,6 @@ module Satellite
 
       Addressable::URI.parse(return_to).tap do |url|
         url.scheme = nil
-        url.host = nil
       end.to_s
     end
 
