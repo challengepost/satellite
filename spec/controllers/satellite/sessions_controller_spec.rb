@@ -77,7 +77,7 @@ describe Satellite::SessionsController, :omniauth do
 
       get :refresh
 
-      expect(response).to redirect_to "/teams/devpost"
+      expect(response).to redirect_to "//devpost.com/teams/devpost"
     end
   end
 end
