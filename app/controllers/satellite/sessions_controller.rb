@@ -27,7 +27,7 @@ module Satellite
     end
 
     def refresh
-      cookies.delete :user_uid, domain: :all, httponly: true
+      cookies.delete :"#{Rails.env}_jwt", domain: :all, httponly: true
       redirect_to(return_to_url || root_url)
     end
 

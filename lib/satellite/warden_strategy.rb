@@ -7,11 +7,11 @@ require 'warden'
 module Satellite
   class WardenStrategy < Warden::Strategies::Base
 
-    # cookies[:user_uid] provided when logged in on platform app
+    # cookies[:production_user_jwt] provided when logged in on platform app
     # env['omniauth.auth'] provided when completed omniauth callback
     #
     def valid?
-      cookies[:user_uid].present? && env['omniauth.auth']
+      user_cookie.present? && env['omniauth.auth']
     end
 
     def authenticate!
@@ -30,12 +30,16 @@ module Satellite
       env['action_dispatch.cookies']
     end
 
+    def user_cookie
+      @user_cookie ||= Satellite::UserCookie.new(cookies)
+    end
+
     def valid_session?(user)
       user && user.provider_key?(cookie_provider_key)
     end
 
     def cookie_provider_key
-      [Satellite.configuration.provider, cookies[:user_uid]]
+      [Satellite.configuration.provider, user_cookie.to_cookie]
     end
 
     def user_class

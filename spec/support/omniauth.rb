@@ -59,7 +59,7 @@ module OmniAuthHelpers
 
     def mock_sso_auth(credentials = default_auth_credentials)
       auth = mock_auth(credentials)
-      create_cookie(:user_uid, auth['uid'], domain: '.example.com')
+      create_cookie(:test_user_jwt, auth['uid'], domain: '.example.com')
     end
 
     def sign_in

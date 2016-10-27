@@ -58,7 +58,7 @@ module Satellite
     end
 
     def authenticate_user?
-      enable_auto_login? && cookies[:user_uid].present?
+      enable_auto_login? && user_cookie.present?
     end
 
     def sign_out
@@ -69,7 +69,7 @@ module Satellite
     end
 
     def valid_session?
-      current_user.provider_key?([Satellite.configuration.provider, cookies[:user_uid]])
+      current_user.provider_key?([Satellite.configuration.provider, user_cookie.to_cookie])
     end
 
     def after_sign_in_url
@@ -112,6 +112,10 @@ module Satellite
     end
 
     private
+
+    def user_cookie
+      @user_cookie ||= Satellite::UserCookie.new(cookies)
+    end
 
     def satellite_refresh_url
       Addressable::URI.parse(Satellite.configuration.provider_root_url).tap do |url|

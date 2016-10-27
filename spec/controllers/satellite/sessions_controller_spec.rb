@@ -64,7 +64,7 @@ describe Satellite::SessionsController, :omniauth do
   end
 
   describe "#refresh" do
-    it "clears the user_uid cookie and redirects to the return_to url stored in the session" do
+    it "clears the user_jwt cookie and redirects to the return_to url stored in the session" do
       return_to_url = "http://devpost.com/teams/devpost"
 
       session = double
@@ -73,7 +73,7 @@ describe Satellite::SessionsController, :omniauth do
 
       cookies = double(:delete)
       allow(controller).to receive(:cookies) { cookies }
-      expect(cookies).to receive(:delete).with(:user_uid, domain: :all, httponly: true)
+      expect(cookies).to receive(:delete).with(:test_user_jwt, domain: :all, httponly: true)
 
       get :refresh
 
