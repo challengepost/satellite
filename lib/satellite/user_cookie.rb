@@ -4,7 +4,7 @@ module Satellite
 
     attr_reader :cookies
 
-    delegate :present?, to: :to_cookie
+    delegate :present?, :blank?, to: :to_cookie
 
     def initialize(cookies)
       @cookies = cookies
