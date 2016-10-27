@@ -1,6 +1,6 @@
 module Satellite
   class UserCookie
-    COOKIE_NAME = "#{Rails.env}_jwt"
+    COOKIE_NAME = "#{Rails.env}_user_jwt"
 
     attr_reader :cookies
 
