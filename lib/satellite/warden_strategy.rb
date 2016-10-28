@@ -35,7 +35,7 @@ module Satellite
     end
 
     def user_decoder
-      @user_decoder ||= Satellite::JWT::UserDecoder.new(user_cookie.to_cookie)
+      @user_decoder ||= Satellite::JWTUserDecoder.new(user_cookie.to_cookie)
     end
 
     def valid_session?(user)
