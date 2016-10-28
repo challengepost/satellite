@@ -6,6 +6,7 @@ module Satellite
   autoload :Configuration, "satellite/configuration"
   autoload :ControllerExtensions, "satellite/controller_extensions"
   autoload :User, "satellite/user"
+  autoload :UserCookie, "satellite/user_cookie"
   autoload :AnonymousUser, "satellite/anonymous_user"
 
   def configure
