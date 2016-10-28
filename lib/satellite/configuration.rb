@@ -20,6 +20,10 @@ module Satellite
       true
     end
 
+    config_accessor :env do
+      Rails.env
+    end
+
     config_accessor :full_host
 
     config_accessor :user_class do
