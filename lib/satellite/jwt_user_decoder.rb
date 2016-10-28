@@ -9,6 +9,7 @@ module Satellite
     end
 
     def payload
+      return {} unless token.present?
       @payload ||= ::JWT.decode(token, Satellite.configuration.jwt_secret_key_base).first
     end
 
