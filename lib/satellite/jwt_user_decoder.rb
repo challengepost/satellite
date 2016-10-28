@@ -1,3 +1,5 @@
+require 'jwt'
+
 module Satellite
   class JWTUserDecoder
     attr_reader :token

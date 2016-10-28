@@ -34,8 +34,8 @@ module Satellite
       @user_cookie ||= Satellite::UserCookie.new(cookies)
     end
 
-    def user_decoder
-      @user_decoder ||= Satellite::JWTUserDecoder.new(user_cookie.to_cookie)
+    def jwt_user
+      @jwt_user ||= Satellite::JWTUserDecoder.new(user_cookie.to_cookie)
     end
 
     def valid_session?(user)
@@ -43,7 +43,7 @@ module Satellite
     end
 
     def cookie_provider_key
-      [Satellite.configuration.provider, user_decoder.user_uid]
+      [Satellite.configuration.provider, jwt_user.user_uid]
     end
 
     def user_class
