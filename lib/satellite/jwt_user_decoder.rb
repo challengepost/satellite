@@ -7,7 +7,7 @@ module Satellite
     end
 
     def payload
-      @payload ||= JWT.decode(token, Satellite.configuration.jwt_secret_key_base).first
+      @payload ||= ::JWT.decode(token, Satellite.configuration.jwt_secret_key_base).first
     end
 
     def user
