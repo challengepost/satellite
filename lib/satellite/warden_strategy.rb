@@ -34,12 +34,16 @@ module Satellite
       @user_cookie ||= Satellite::UserCookie.new(cookies)
     end
 
+    def user_decoder
+      @user_decoder ||= Satellite::JWT::UserDecoder.new(user_cookie.to_cookie)
+    end
+
     def valid_session?(user)
       user && user.provider_key?(cookie_provider_key)
     end
 
     def cookie_provider_key
-      [Satellite.configuration.provider, user_cookie.to_cookie]
+      [Satellite.configuration.provider, user_decoder.user_uid]
     end
 
     def user_class

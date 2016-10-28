@@ -7,6 +7,7 @@ module Satellite
   autoload :ControllerExtensions, "satellite/controller_extensions"
   autoload :User, "satellite/user"
   autoload :UserCookie, "satellite/user_cookie"
+  autoload :JWTUserDecoder, "satellite/jwt_user_decoder"
   autoload :AnonymousUser, "satellite/anonymous_user"
 
   def configure

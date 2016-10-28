@@ -24,6 +24,8 @@ module Satellite
       Rails.env
     end
 
+    config_accessor :jwt_secret_key_base
+
     config_accessor :full_host
 
     config_accessor :user_class do
