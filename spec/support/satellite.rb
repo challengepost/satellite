@@ -12,5 +12,7 @@ RSpec.configure do |config|
     else
       # default to environment settings
     end
+
+    allow(Satellite.configuration).to receive(:jwt_secret_key_base) { "123456" }
   end
 end

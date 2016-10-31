@@ -73,7 +73,7 @@ describe Satellite::SessionsController, :omniauth do
 
       cookies = double(:delete)
       allow(controller).to receive(:cookies) { cookies }
-      expect(cookies).to receive(:delete).with(:test_user_jwt, domain: :all, httponly: true)
+      expect(cookies).to receive(:delete).with("test_user_jwt", domain: :all, httponly: true)
 
       get :refresh
 
