@@ -69,11 +69,7 @@ module Satellite
     end
 
     def valid_session?
-      current_user.provider_key?([Satellite.configuration.provider, jwt_user.user_uid])
-    end
-
-    def jwt_user
-      @jwt_user ||= Satellite::JWTUserDecoder.new(user_cookie.to_cookie)
+      user_cookie.valid_session?(current_user)
     end
 
     def after_sign_in_url

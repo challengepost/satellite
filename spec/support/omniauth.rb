@@ -60,7 +60,7 @@ module OmniAuthHelpers
     def mock_sso_auth(credentials = default_auth_credentials)
       auth = mock_auth(credentials)
       token = ::JWT.encode({ id: credentials["uid"] }, Satellite.configuration.jwt_secret_key_base)
-      create_cookie(:test_user_jwt, token, domain: '.example.com')
+      create_cookie(:test_jwt, token, domain: '.example.com')
     end
 
     def sign_in

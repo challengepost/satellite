@@ -7,8 +7,8 @@ require 'warden'
 module Satellite
   class WardenStrategy < Warden::Strategies::Base
 
-    # cookies[:production_user_jwt] provided when logged in on platform app
-    # env['omniauth.auth'] provided when completed omniauth callback
+    # cookies[:jwt] is present when logged in on platform app
+    # env['omniauth.auth'] is coming from the omniauth callback
     #
     def valid?
       user_cookie.present? && env['omniauth.auth']
@@ -34,16 +34,8 @@ module Satellite
       @user_cookie ||= Satellite::UserCookie.new(cookies)
     end
 
-    def jwt_user
-      @jwt_user ||= Satellite::JWTUserDecoder.new(user_cookie.to_cookie)
-    end
-
     def valid_session?(user)
-      user && user.provider_key?(cookie_provider_key)
-    end
-
-    def cookie_provider_key
-      [Satellite.configuration.provider, jwt_user.user_uid]
+      user_cookie.valid_session?(user)
     end
 
     def user_class

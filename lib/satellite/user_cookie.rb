@@ -1,7 +1,5 @@
 module Satellite
   class UserCookie
-    COOKIE_NAME = "#{Satellite.configuration.env}_user_jwt"
-
     attr_reader :cookies
 
     delegate :present?, :blank?, to: :to_cookie
@@ -15,7 +13,39 @@ module Satellite
     end
 
     def cookie_name
-      COOKIE_NAME
+      @cookie_name ||= [environment, "jwt"].compact.join("_")
+    end
+
+    def delete
+      cookies.delete(cookie_name, domain: :all, httponly: true)
+    end
+
+    def valid_session?(user)
+      return false unless user
+      user && user.provider_key?(provider_key)
+    end
+
+    private
+
+    def provider_key
+      [Satellite.configuration.provider, jwt_user.user_uid]
+    end
+
+    def jwt_user
+      Satellite::JWTUserDecoder.new(to_cookie)
+    end
+
+    def environment
+      return nil if production_env?
+      rails_env
+    end
+
+    def production_env?
+      rails_env == "production"
+    end
+
+    def rails_env
+      Satellite.configuration.env
     end
   end
 end

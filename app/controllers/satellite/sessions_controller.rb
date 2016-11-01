@@ -27,7 +27,7 @@ module Satellite
     end
 
     def refresh
-      cookies.delete user_cookie.cookie_name, domain: :all, httponly: true
+      Satellite::UserCookie.new(cookies).delete
       redirect_to(return_to_url || root_url)
     end
 
