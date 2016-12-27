@@ -52,5 +52,5 @@ end
 
 Warden::Manager.serialize_from_session do |serialized|
   class_name, id = serialized
-  class_name.constantize.find(id)
+  class_name.constantize.find_by(id: id)
 end
